@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Social</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: rgb(255, 255, 255);
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #1877f2;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .btn {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .btn:hover {
+            background: #166fe5;
+        }
+        .btn-secondary {
+            background: #e4e6eb;
+            color: #050505;
+        }
+        .btn-secondary:hover {
+            background: #d8dadf;
+        }
+        .auth-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 50px;
+        }
+        .auth-section h2 {
+            margin-bottom: 20px;
+        }
+        .auth-section input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        .create-post {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .create-post textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .create-post textarea:focus {
+            outline: none;
+            border-color: #1877f2;
+        }
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .post {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .post-header .avatar {
+            width: 40px;
+            height: 40px;
+        }
+        .post-user-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .post-user-info .username {
+            color: #65676b;
+            font-size: 13px;
+        }
+        .post-time {
+            color: #65676b;
+            font-size: 12px;
+        }
+        .post-content {
+            color: #050505;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            white-space: pre-wrap;
+        }
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid #e4e6eb;
+            border-bottom: 1px solid #e4e6eb;
+            margin-bottom: 5px;
+            color: #65676b;
+            font-size: 14px;
+        }
+        .post-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .post-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #65676b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        .post-btn:hover {
+            background: #f0f2f5;
+        }
+        .post-btn.liked {
+            color: #e41e3f;
+        }
+        .comments-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e4e6eb;
+        }
+        .comment {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .comment .avatar {
+            width: 32px;
+            height: 32px;
+            font-size: 12px;
+        }
+        .comment-content {
+            flex: 1;
+            background: #f0f2f5;
+            padding: 8px 12px;
+            border-radius: 18px;
+        }
+        .comment-author {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+        .comment-text {
+            font-size: 14px;
+            color: #050505;
+        }
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .comment-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 18px;
+            font-size: 14px;
+        }
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #65676b;
+        }
+        .empty-state h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>📱 Mini Social</h1>
+        <div class="user-info" id="userInfo" style="display: none;">
+            <div class="avatar" id="userAvatar">U</div>
+            <span id="userName"></span>
+            <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-section">
+            <h2>Welcome to Mini Social</h2>
+            <div class="message" id="authMessage"></div>
+            <input type="text" id="authUsername" placeholder="Username">
+            <input type="email" id="authEmail" placeholder="Email">
+            <input type="password" id="authPassword" placeholder="Password (min 6 characters)">
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="btn" id="loginBtn">Sign In</button>
+                <button class="btn btn-secondary" id="signupBtn">Sign Up</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" style="display: none;">
+            <!-- Create Post -->
+            <div class="create-post">
+                <div class="message" id="postMessage"></div>
+                <textarea id="postContent" placeholder="What's on your mind?"></textarea>
+                <div class="post-actions">
+                    <button class="btn" id="createPostBtn">Post</button>
+                </div>
+            </div>
+
+            <!-- Feed -->
+            <div class="feed" id="feed"></div>
+        </div>
+    </div>
+
+    <!-- Load Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        (function() {
+            const SUPABASE_URL = 'https://qrqmpmakaxxkdecfidpo.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFycW1wbWFrYXh4a2RlY2ZpZHBvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5NTMzMTEsImV4cCI6MjA4NDUyOTMxMX0.tH9bcf-_TyKHnpAAjliZt9whqkeZzmIHQCVwaCpasN0';
+
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            let currentUser = null;
+            let currentProfile = null;
+
+            // Check auth state
+            async function checkUser() {
+                const { data: { user } } = await supabase.auth.getUser();
+                currentUser = user;
+
+                if (user) {
+                    console.log('User logged in:', user.id);
+                    
+                    // Try to get profile
+                    const { data: profile, error } = await supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', user.id)
+                        .maybeSingle();
+
+                    console.log('Profile query result:', { profile, error });
+
+                    // If no profile exists, create one
+                    if (!profile) {
+                        console.log('No profile found, creating one...');
+                        const username = user.email.split('@')[0] + '_' + Math.random().toString(36).substring(2, 7);
+                        
+                        const { data: newProfile, error: createError } = await supabase
+                            .from('profiles')
+                            .insert({
+                                id: user.id,
+                                username: username,
+                                display_name: username
+                            })
+                            .select()
+                            .single();
+
+                        console.log('Profile creation result:', { newProfile, createError });
+
+                        if (createError) {
+                            alert('Error creating profile: ' + createError.message);
+                            await supabase.auth.signOut();
+                            return;
+                        }
+
+                        currentProfile = newProfile;
+                    } else {
+                        currentProfile = profile;
+                    }
+
+                    document.getElementById('authSection').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                    document.getElementById('userInfo').style.display = 'flex';
+                    document.getElementById('userName').textContent = currentProfile?.username || 'User';
+                    document.getElementById('userAvatar').textContent = (currentProfile?.username || 'U')[0].toUpperCase();
+
+                    loadFeed();
+                } else {
+                    document.getElementById('authSection').style.display = 'block';
+                    document.getElementById('mainContent').style.display = 'none';
+                    document.getElementById('userInfo').style.display = 'none';
+                }
+            }
+
+            // Sign Up - FIXED VERSION
+            document.getElementById('signupBtn').addEventListener('click', async () => {
+                const username = document.getElementById('authUsername').value.trim();
+                const email = document.getElementById('authEmail').value.trim();
+                const password = document.getElementById('authPassword').value;
+
+                if (!username || !email || !password) {
+                    showAuthMessage('Please fill in all fields', 'error');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    showAuthMessage('Password must be at least 6 characters', 'error');
+                    return;
+                }
+
+                // Check if username is already taken
+                const { data: existingProfile } = await supabase
+                    .from('profiles')
+                    .select('username')
+                    .eq('username', username)
+                    .single();
+
+                if (existingProfile) {
+                    showAuthMessage('Username already taken. Please choose another.', 'error');
+                    return;
+                }
+
+                // First, sign up the user
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email,
+                    password
+                });
+
+                if (authError) {
+                    showAuthMessage(authError.message, 'error');
+                    return;
+                }
+
+                // Then create/update the profile with the correct username
+                if (authData.user) {
+                    const { error: profileError } = await supabase
+                        .from('profiles')
+                        .upsert({
+                            id: authData.user.id,
+                            username: username,
+                            display_name: username
+                        });
+
+                    if (profileError) {
+                        showAuthMessage('Account created but profile error: ' + profileError.message, 'error');
+                    } else {
+                        showAuthMessage('Account created! You can now sign in.', 'success');
+                        // Clear form
+                        document.getElementById('authUsername').value = '';
+                        document.getElementById('authEmail').value = '';
+                        document.getElementById('authPassword').value = '';
+                        // Auto check user after a moment
+                        setTimeout(() => checkUser(), 1500);
+                    }
+                }
+            });
+
+            // Sign In
+            document.getElementById('loginBtn').addEventListener('click', async () => {
+                const email = document.getElementById('authEmail').value.trim();
+                const password = document.getElementById('authPassword').value;
+
+                if (!email || !password) {
+                    showAuthMessage('Please enter email and password', 'error');
+                    return;
+                }
+
+                const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+                if (error) {
+                    showAuthMessage(error.message, 'error');
+                } else {
+                    checkUser();
+                }
+            });
+
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                await supabase.auth.signOut();
+                checkUser();
+            });
+
+            // Create Post
+            document.getElementById('createPostBtn').addEventListener('click', async () => {
+                const content = document.getElementById('postContent').value.trim();
+
+                if (!content) {
+                    showPostMessage('Please write something!', 'error');
+                    return;
+                }
+
+                console.log('Creating post with user_id:', currentUser.id);
+
+                const { data, error } = await supabase
+                    .from('posts')
+                    .insert([{
+                        user_id: currentUser.id,
+                        content: content
+                    }])
+                    .select();
+
+                console.log('Post creation result:', { data, error });
+
+                if (error) {
+                    showPostMessage('Error: ' + error.message, 'error');
+                    console.error('Full error:', error);
+                } else {
+                    showPostMessage('Posted!', 'success');
+                    document.getElementById('postContent').value = '';
+                    loadFeed();
+                }
+            });
+
+            // Load Feed
+            async function loadFeed() {
+                const { data: posts, error } = await supabase
+                    .from('posts_with_counts')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Error loading feed:', error);
+                    return;
+                }
+
+                const feed = document.getElementById('feed');
+
+                if (posts.length === 0) {
+                    feed.innerHTML = `
+                        <div class="empty-state">
+                            <h2>No posts yet</h2>
+                            <p>Be the first to post something!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Check which posts current user has liked
+                const { data: userLikes } = await supabase
+                    .from('likes')
+                    .select('post_id')
+                    .eq('user_id', currentUser.id);
+
+                const likedPostIds = new Set(userLikes?.map(l => l.post_id) || []);
+
+                feed.innerHTML = posts.map(post => {
+                    const isLiked = likedPostIds.has(post.id);
+                    return `
+                        <div class="post" data-post-id="${post.id}">
+                            <div class="post-header">
+                                <div class="avatar">${post.username[0].toUpperCase()}</div>
+                                <div class="post-user-info">
+                                    <h3>${post.display_name || post.username}</h3>
+                                    <div class="username">@${post.username}</div>
+                                    <div class="post-time">${formatTime(post.created_at)}</div>
+                                </div>
+                            </div>
+                            <div class="post-content">${escapeHtml(post.content)}</div>
+                            <div class="post-stats">
+                                <span>${post.like_count} ${post.like_count === 1 ? 'like' : 'likes'}</span>
+                                <span>${post.comment_count} ${post.comment_count === 1 ? 'comment' : 'comments'}</span>
+                            </div>
+                            <div class="post-buttons">
+                                <button class="post-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}', ${isLiked})">
+                                    ${isLiked ? '❤️' : '🤍'} Like
+                                </button>
+                                <button class="post-btn" onclick="toggleComments('${post.id}')">
+                                    💬 Comment
+                                </button>
+                            </div>
+                            <div class="comments-section" id="comments-${post.id}" style="display: none;">
+                                <div class="comments-list" id="comments-list-${post.id}"></div>
+                                <div class="comment-input">
+                                    <input type="text" placeholder="Write a comment..." id="comment-input-${post.id}">
+                                    <button class="btn" onclick="addComment('${post.id}')">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Toggle Like
+            window.toggleLike = async function(postId, isLiked) {
+                if (isLiked) {
+                    await supabase
+                        .from('likes')
+                        .delete()
+                        .eq('post_id', postId)
+                        .eq('user_id', currentUser.id);
+                } else {
+                    await supabase
+                        .from('likes')
+                        .insert([{
+                            post_id: postId,
+                            user_id: currentUser.id
+                        }]);
+                }
+                loadFeed();
+            };
+
+            // Toggle Comments
+            window.toggleComments = async function(postId) {
+                const commentsSection = document.getElementById(`comments-${postId}`);
+                
+                if (commentsSection.style.display === 'none') {
+                    commentsSection.style.display = 'block';
+                    await loadComments(postId);
+                } else {
+                    commentsSection.style.display = 'none';
+                }
+            };
+
+            // Load Comments
+            async function loadComments(postId) {
+                const { data: comments } = await supabase
+                    .from('comments')
+                    .select(`
+                        *,
+                        profiles (username, display_name)
+                    `)
+                    .eq('post_id', postId)
+                    .order('created_at', { ascending: true });
+
+                const commentsList = document.getElementById(`comments-list-${postId}`);
+                
+                if (!comments || comments.length === 0) {
+                    commentsList.innerHTML = '<p style="color: #65676b; font-size: 14px; padding: 10px;">No comments yet</p>';
+                    return;
+                }
+
+                commentsList.innerHTML = comments.map(comment => `
+                    <div class="comment">
+                        <div class="avatar">${comment.profiles.username[0].toUpperCase()}</div>
+                        <div class="comment-content">
+                            <div class="comment-author">${comment.profiles.display_name || comment.profiles.username}</div>
+                            <div class="comment-text">${escapeHtml(comment.content)}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Add Comment
+            window.addComment = async function(postId) {
+                const input = document.getElementById(`comment-input-${postId}`);
+                const content = input.value.trim();
+
+                if (!content) return;
+
+                const { error } = await supabase
+                    .from('comments')
+                    .insert([{
+                        post_id: postId,
+                        user_id: currentUser.id,
+                        content: content
+                    }]);
+
+                if (!error) {
+                    input.value = '';
+                    loadComments(postId);
+                    loadFeed();
+                }
+            };
+
+            // Helper Functions
+            function showAuthMessage(text, type) {
+                const msg = document.getElementById('authMessage');
+                msg.textContent = text;
+                msg.className = `message ${type}`;
+                msg.style.display = 'block';
+            }
+
+            function showPostMessage(text, type) {
+                const msg = document.getElementById('postMessage');
+                msg.textContent = text;
+                msg.className = `message ${type}`;
+                msg.style.display = 'block';
+                setTimeout(() => msg.style.display = 'none', 3000);
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function formatTime(timestamp) {
+                const date = new Date(timestamp);
+                const now = new Date();
+                const diff = Math.floor((now - date) / 1000);
+
+                if (diff < 60) return 'Just now';
+                if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+                if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+                if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+                return date.toLocaleDateString();
+            }
+
+            // Initialize
+            checkUser();
+        })();
+    </script>
+</body>
+</html>
